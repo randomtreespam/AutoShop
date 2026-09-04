@@ -1,0 +1,10 @@
+{
+  "id": "autoshop",
+  "name": "Auto Shop",
+  "author": ["randomtree07"],
+  "description": "Auto-rerolls the shop until a chosen card shows up.",
+  "version": "0.1.0",
+  "priority": 0,
+  "prefix": "autoshop",
+  "main_file": "AutoShop_smods.lua"
+}

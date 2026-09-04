@@ -1,0 +1,40 @@
+[manifest]
+version = "0.1.0"
+dump_lua = false
+
+# Expose nativefs as a require-able module, same mechanism Brainstorm and most
+# other Balatro mods use to read their own split-up .lua files off disk.
+[[patches]]
+[patches.module]
+source = "nativefs.lua"
+before = "main.lua"
+name = "nativefs"
+
+# Append our loader to the end of main.lua (position-independent, safe).
+[[patches]]
+[patches.copy]
+target = "main.lua"
+position = "append"
+sources = ["AutoShop.lua"]
+
+# Call our init function once the player's profile is loaded, same hook point
+# Brainstorm uses.
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "self:load_profile(G.SETTINGS.profile or 1)"
+position = "after"
+payload = "initAutoShop()"
+match_indent = true
+overwrite = false
+
+# Route raw key presses to our handler, same hook point Brainstorm uses for
+# its own keybinds.
+[[patches]]
+[patches.pattern]
+target = "engine/controller.lua"
+pattern = "if self.text_input_hook then"
+position = "before"
+payload = "AutoShop.key_press_update(key)"
+match_indent = true
+overwrite = false
